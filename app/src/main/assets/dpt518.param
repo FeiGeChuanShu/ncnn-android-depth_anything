@@ -1,0 +1,221 @@
+7767517
+219 289
+Input                    image                    0 1 image
+MemoryData               /Cast_output_0           0 1 /Cast_output_0 0=384 1=1370
+MemoryData               /Expand_output_0         0 1 /Expand_output_0 0=384 1=1
+Convolution              /patch_embed/proj/Conv   1 1 image /patch_embed/proj/Conv_output_0 0=384 1=14 3=14 5=1 6=225792
+Reshape                  /patch_embed/Reshape     1 1 /patch_embed/proj/Conv_output_0 /patch_embed/Reshape_output_0 0=-1 1=384
+Permute                  /patch_embed/Transpose   1 1 /patch_embed/Reshape_output_0 /patch_embed/Transpose_output_0 0=1
+Concat                   /Concat                  2 1 /Expand_output_0 /patch_embed/Transpose_output_0 /Concat_output_0
+BinaryOp                 /Add                     2 1 /Concat_output_0 /Cast_output_0 /Add_output_0
+Split                    splitncnn_0              1 2 /Add_output_0 /Add_output_0_splitncnn_0 /Add_output_0_splitncnn_1
+LayerNorm                /blocks.0/norm1/Add_1    1 1 /Add_output_0_splitncnn_1 /blocks.0/norm1/Add_1_output_0 0=384 1=1.000000e-06
+Split                    splitncnn_1              1 3 /blocks.0/norm1/Add_1_output_0 /blocks.0/norm1/Add_1_output_0_splitncnn_0 /blocks.0/norm1/Add_1_output_0_splitncnn_1 /blocks.0/norm1/Add_1_output_0_splitncnn_2
+MultiHeadAttention       /blocks.0/attn/proj/Add  3 1 /blocks.0/norm1/Add_1_output_0_splitncnn_2 /blocks.0/norm1/Add_1_output_0_splitncnn_1 /blocks.0/norm1/Add_1_output_0_splitncnn_0 /blocks.0/attn/proj/Add_output_0 0=384 1=6 2=147456 3=384 4=384
+BinaryOp                 /blocks.0/Add            2 1 /Add_output_0_splitncnn_0 /blocks.0/attn/proj/Add_output_0 /blocks.0/Add_output_0
+Split                    splitncnn_2              1 2 /blocks.0/Add_output_0 /blocks.0/Add_output_0_splitncnn_0 /blocks.0/Add_output_0_splitncnn_1
+LayerNorm                /blocks.0/norm2/Add_1    1 1 /blocks.0/Add_output_0_splitncnn_1 /blocks.0/norm2/Add_1_output_0 0=384 1=1.000000e-06
+InnerProduct             /blocks.0/mlp/fc1/MatMul 1 1 /blocks.0/norm2/Add_1_output_0 /blocks.0/mlp/fc1/Add_output_0 0=1536 1=1 2=589824
+GELU                     Gelu_1                   1 1 /blocks.0/mlp/fc1/Add_output_0 /blocks.0/mlp/act/Mul_1_output_0 0=1
+InnerProduct             /blocks.0/mlp/fc2/MatMul 1 1 /blocks.0/mlp/act/Mul_1_output_0 /blocks.0/mlp/fc2/Add_output_0 0=384 1=1 2=589824
+BinaryOp                 /blocks.0/Add_1          2 1 /blocks.0/Add_output_0_splitncnn_0 /blocks.0/mlp/fc2/Add_output_0 /blocks.0/Add_1_output_0
+Split                    splitncnn_4              1 2 /blocks.0/Add_1_output_0 /blocks.0/Add_1_output_0_splitncnn_0 /blocks.0/Add_1_output_0_splitncnn_1
+LayerNorm                /blocks.1/norm1/Add_1    1 1 /blocks.0/Add_1_output_0_splitncnn_1 /blocks.1/norm1/Add_1_output_0 0=384 1=1.000000e-06
+Split                    splitncnn_5              1 3 /blocks.1/norm1/Add_1_output_0 /blocks.1/norm1/Add_1_output_0_splitncnn_0 /blocks.1/norm1/Add_1_output_0_splitncnn_1 /blocks.1/norm1/Add_1_output_0_splitncnn_2
+MultiHeadAttention       /blocks.1/attn/proj/Add  3 1 /blocks.1/norm1/Add_1_output_0_splitncnn_2 /blocks.1/norm1/Add_1_output_0_splitncnn_1 /blocks.1/norm1/Add_1_output_0_splitncnn_0 /blocks.1/attn/proj/Add_output_0 0=384 1=6 2=147456 3=384 4=384
+BinaryOp                 /blocks.1/Add            2 1 /blocks.0/Add_1_output_0_splitncnn_0 /blocks.1/attn/proj/Add_output_0 /blocks.1/Add_output_0
+Split                    splitncnn_6              1 2 /blocks.1/Add_output_0 /blocks.1/Add_output_0_splitncnn_0 /blocks.1/Add_output_0_splitncnn_1
+LayerNorm                /blocks.1/norm2/Add_1    1 1 /blocks.1/Add_output_0_splitncnn_1 /blocks.1/norm2/Add_1_output_0 0=384 1=1.000000e-06
+InnerProduct             /blocks.1/mlp/fc1/MatMul 1 1 /blocks.1/norm2/Add_1_output_0 /blocks.1/mlp/fc1/Add_output_0 0=1536 1=1 2=589824
+GELU                     Gelu_2                   1 1 /blocks.1/mlp/fc1/Add_output_0 /blocks.1/mlp/act/Mul_1_output_0 0=1
+InnerProduct             /blocks.1/mlp/fc2/MatMul 1 1 /blocks.1/mlp/act/Mul_1_output_0 /blocks.1/mlp/fc2/Add_output_0 0=384 1=1 2=589824
+BinaryOp                 /blocks.1/Add_1          2 1 /blocks.1/Add_output_0_splitncnn_0 /blocks.1/mlp/fc2/Add_output_0 /blocks.1/Add_1_output_0
+Split                    splitncnn_8              1 2 /blocks.1/Add_1_output_0 /blocks.1/Add_1_output_0_splitncnn_0 /blocks.1/Add_1_output_0_splitncnn_1
+LayerNorm                /blocks.2/norm1/Add_1    1 1 /blocks.1/Add_1_output_0_splitncnn_1 /blocks.2/norm1/Add_1_output_0 0=384 1=1.000000e-06
+Split                    splitncnn_9              1 3 /blocks.2/norm1/Add_1_output_0 /blocks.2/norm1/Add_1_output_0_splitncnn_0 /blocks.2/norm1/Add_1_output_0_splitncnn_1 /blocks.2/norm1/Add_1_output_0_splitncnn_2
+MultiHeadAttention       /blocks.2/attn/proj/Add  3 1 /blocks.2/norm1/Add_1_output_0_splitncnn_2 /blocks.2/norm1/Add_1_output_0_splitncnn_1 /blocks.2/norm1/Add_1_output_0_splitncnn_0 /blocks.2/attn/proj/Add_output_0 0=384 1=6 2=147456 3=384 4=384
+BinaryOp                 /blocks.2/Add            2 1 /blocks.1/Add_1_output_0_splitncnn_0 /blocks.2/attn/proj/Add_output_0 /blocks.2/Add_output_0
+Split                    splitncnn_10             1 2 /blocks.2/Add_output_0 /blocks.2/Add_output_0_splitncnn_0 /blocks.2/Add_output_0_splitncnn_1
+LayerNorm                /blocks.2/norm2/Add_1    1 1 /blocks.2/Add_output_0_splitncnn_1 /blocks.2/norm2/Add_1_output_0 0=384 1=1.000000e-06
+InnerProduct             /blocks.2/mlp/fc1/MatMul 1 1 /blocks.2/norm2/Add_1_output_0 /blocks.2/mlp/fc1/Add_output_0 0=1536 1=1 2=589824
+GELU                     Gelu_3                   1 1 /blocks.2/mlp/fc1/Add_output_0 /blocks.2/mlp/act/Mul_1_output_0 0=1
+InnerProduct             /blocks.2/mlp/fc2/MatMul 1 1 /blocks.2/mlp/act/Mul_1_output_0 /blocks.2/mlp/fc2/Add_output_0 0=384 1=1 2=589824
+BinaryOp                 /blocks.2/Add_1          2 1 /blocks.2/Add_output_0_splitncnn_0 /blocks.2/mlp/fc2/Add_output_0 /blocks.2/Add_1_output_0
+Split                    splitncnn_12             1 2 /blocks.2/Add_1_output_0 /blocks.2/Add_1_output_0_splitncnn_0 /blocks.2/Add_1_output_0_splitncnn_1
+LayerNorm                /blocks.3/norm1/Add_1    1 1 /blocks.2/Add_1_output_0_splitncnn_1 /blocks.3/norm1/Add_1_output_0 0=384 1=1.000000e-06
+Split                    splitncnn_13             1 3 /blocks.3/norm1/Add_1_output_0 /blocks.3/norm1/Add_1_output_0_splitncnn_0 /blocks.3/norm1/Add_1_output_0_splitncnn_1 /blocks.3/norm1/Add_1_output_0_splitncnn_2
+MultiHeadAttention       /blocks.3/attn/proj/Add  3 1 /blocks.3/norm1/Add_1_output_0_splitncnn_2 /blocks.3/norm1/Add_1_output_0_splitncnn_1 /blocks.3/norm1/Add_1_output_0_splitncnn_0 /blocks.3/attn/proj/Add_output_0 0=384 1=6 2=147456 3=384 4=384
+BinaryOp                 /blocks.3/Add            2 1 /blocks.2/Add_1_output_0_splitncnn_0 /blocks.3/attn/proj/Add_output_0 /blocks.3/Add_output_0
+Split                    splitncnn_14             1 2 /blocks.3/Add_output_0 /blocks.3/Add_output_0_splitncnn_0 /blocks.3/Add_output_0_splitncnn_1
+LayerNorm                /blocks.3/norm2/Add_1    1 1 /blocks.3/Add_output_0_splitncnn_1 /blocks.3/norm2/Add_1_output_0 0=384 1=1.000000e-06
+InnerProduct             /blocks.3/mlp/fc1/MatMul 1 1 /blocks.3/norm2/Add_1_output_0 /blocks.3/mlp/fc1/Add_output_0 0=1536 1=1 2=589824
+GELU                     Gelu_4                   1 1 /blocks.3/mlp/fc1/Add_output_0 /blocks.3/mlp/act/Mul_1_output_0 0=1
+InnerProduct             /blocks.3/mlp/fc2/MatMul 1 1 /blocks.3/mlp/act/Mul_1_output_0 /blocks.3/mlp/fc2/Add_output_0 0=384 1=1 2=589824
+BinaryOp                 /blocks.3/Add_1          2 1 /blocks.3/Add_output_0_splitncnn_0 /blocks.3/mlp/fc2/Add_output_0 /blocks.3/Add_1_output_0
+Split                    splitncnn_16             1 2 /blocks.3/Add_1_output_0 /blocks.3/Add_1_output_0_splitncnn_0 /blocks.3/Add_1_output_0_splitncnn_1
+LayerNorm                /blocks.4/norm1/Add_1    1 1 /blocks.3/Add_1_output_0_splitncnn_1 /blocks.4/norm1/Add_1_output_0 0=384 1=1.000000e-06
+Split                    splitncnn_17             1 3 /blocks.4/norm1/Add_1_output_0 /blocks.4/norm1/Add_1_output_0_splitncnn_0 /blocks.4/norm1/Add_1_output_0_splitncnn_1 /blocks.4/norm1/Add_1_output_0_splitncnn_2
+MultiHeadAttention       /blocks.4/attn/proj/Add  3 1 /blocks.4/norm1/Add_1_output_0_splitncnn_2 /blocks.4/norm1/Add_1_output_0_splitncnn_1 /blocks.4/norm1/Add_1_output_0_splitncnn_0 /blocks.4/attn/proj/Add_output_0 0=384 1=6 2=147456 3=384 4=384
+BinaryOp                 /blocks.4/Add            2 1 /blocks.3/Add_1_output_0_splitncnn_0 /blocks.4/attn/proj/Add_output_0 /blocks.4/Add_output_0
+Split                    splitncnn_18             1 2 /blocks.4/Add_output_0 /blocks.4/Add_output_0_splitncnn_0 /blocks.4/Add_output_0_splitncnn_1
+LayerNorm                /blocks.4/norm2/Add_1    1 1 /blocks.4/Add_output_0_splitncnn_1 /blocks.4/norm2/Add_1_output_0 0=384 1=1.000000e-06
+InnerProduct             /blocks.4/mlp/fc1/MatMul 1 1 /blocks.4/norm2/Add_1_output_0 /blocks.4/mlp/fc1/Add_output_0 0=1536 1=1 2=589824
+GELU                     Gelu_5                   1 1 /blocks.4/mlp/fc1/Add_output_0 /blocks.4/mlp/act/Mul_1_output_0 0=1
+InnerProduct             /blocks.4/mlp/fc2/MatMul 1 1 /blocks.4/mlp/act/Mul_1_output_0 /blocks.4/mlp/fc2/Add_output_0 0=384 1=1 2=589824
+BinaryOp                 /blocks.4/Add_1          2 1 /blocks.4/Add_output_0_splitncnn_0 /blocks.4/mlp/fc2/Add_output_0 /blocks.4/Add_1_output_0
+Split                    splitncnn_20             1 2 /blocks.4/Add_1_output_0 /blocks.4/Add_1_output_0_splitncnn_0 /blocks.4/Add_1_output_0_splitncnn_1
+LayerNorm                /blocks.5/norm1/Add_1    1 1 /blocks.4/Add_1_output_0_splitncnn_1 /blocks.5/norm1/Add_1_output_0 0=384 1=1.000000e-06
+Split                    splitncnn_21             1 3 /blocks.5/norm1/Add_1_output_0 /blocks.5/norm1/Add_1_output_0_splitncnn_0 /blocks.5/norm1/Add_1_output_0_splitncnn_1 /blocks.5/norm1/Add_1_output_0_splitncnn_2
+MultiHeadAttention       /blocks.5/attn/proj/Add  3 1 /blocks.5/norm1/Add_1_output_0_splitncnn_2 /blocks.5/norm1/Add_1_output_0_splitncnn_1 /blocks.5/norm1/Add_1_output_0_splitncnn_0 /blocks.5/attn/proj/Add_output_0 0=384 1=6 2=147456 3=384 4=384
+BinaryOp                 /blocks.5/Add            2 1 /blocks.4/Add_1_output_0_splitncnn_0 /blocks.5/attn/proj/Add_output_0 /blocks.5/Add_output_0
+Split                    splitncnn_22             1 2 /blocks.5/Add_output_0 /blocks.5/Add_output_0_splitncnn_0 /blocks.5/Add_output_0_splitncnn_1
+LayerNorm                /blocks.5/norm2/Add_1    1 1 /blocks.5/Add_output_0_splitncnn_1 /blocks.5/norm2/Add_1_output_0 0=384 1=1.000000e-06
+InnerProduct             /blocks.5/mlp/fc1/MatMul 1 1 /blocks.5/norm2/Add_1_output_0 /blocks.5/mlp/fc1/Add_output_0 0=1536 1=1 2=589824
+GELU                     Gelu_6                   1 1 /blocks.5/mlp/fc1/Add_output_0 /blocks.5/mlp/act/Mul_1_output_0 0=1
+InnerProduct             /blocks.5/mlp/fc2/MatMul 1 1 /blocks.5/mlp/act/Mul_1_output_0 /blocks.5/mlp/fc2/Add_output_0 0=384 1=1 2=589824
+BinaryOp                 /blocks.5/Add_1          2 1 /blocks.5/Add_output_0_splitncnn_0 /blocks.5/mlp/fc2/Add_output_0 /blocks.5/Add_1_output_0
+Split                    splitncnn_24             1 2 /blocks.5/Add_1_output_0 /blocks.5/Add_1_output_0_splitncnn_0 /blocks.5/Add_1_output_0_splitncnn_1
+LayerNorm                /blocks.6/norm1/Add_1    1 1 /blocks.5/Add_1_output_0_splitncnn_1 /blocks.6/norm1/Add_1_output_0 0=384 1=1.000000e-06
+Split                    splitncnn_25             1 3 /blocks.6/norm1/Add_1_output_0 /blocks.6/norm1/Add_1_output_0_splitncnn_0 /blocks.6/norm1/Add_1_output_0_splitncnn_1 /blocks.6/norm1/Add_1_output_0_splitncnn_2
+MultiHeadAttention       /blocks.6/attn/proj/Add  3 1 /blocks.6/norm1/Add_1_output_0_splitncnn_2 /blocks.6/norm1/Add_1_output_0_splitncnn_1 /blocks.6/norm1/Add_1_output_0_splitncnn_0 /blocks.6/attn/proj/Add_output_0 0=384 1=6 2=147456 3=384 4=384
+BinaryOp                 /blocks.6/Add            2 1 /blocks.5/Add_1_output_0_splitncnn_0 /blocks.6/attn/proj/Add_output_0 /blocks.6/Add_output_0
+Split                    splitncnn_26             1 2 /blocks.6/Add_output_0 /blocks.6/Add_output_0_splitncnn_0 /blocks.6/Add_output_0_splitncnn_1
+LayerNorm                /blocks.6/norm2/Add_1    1 1 /blocks.6/Add_output_0_splitncnn_1 /blocks.6/norm2/Add_1_output_0 0=384 1=1.000000e-06
+InnerProduct             /blocks.6/mlp/fc1/MatMul 1 1 /blocks.6/norm2/Add_1_output_0 /blocks.6/mlp/fc1/Add_output_0 0=1536 1=1 2=589824
+GELU                     Gelu_7                   1 1 /blocks.6/mlp/fc1/Add_output_0 /blocks.6/mlp/act/Mul_1_output_0 0=1
+InnerProduct             /blocks.6/mlp/fc2/MatMul 1 1 /blocks.6/mlp/act/Mul_1_output_0 /blocks.6/mlp/fc2/Add_output_0 0=384 1=1 2=589824
+BinaryOp                 /blocks.6/Add_1          2 1 /blocks.6/Add_output_0_splitncnn_0 /blocks.6/mlp/fc2/Add_output_0 /blocks.6/Add_1_output_0
+Split                    splitncnn_28             1 2 /blocks.6/Add_1_output_0 /blocks.6/Add_1_output_0_splitncnn_0 /blocks.6/Add_1_output_0_splitncnn_1
+LayerNorm                /blocks.7/norm1/Add_1    1 1 /blocks.6/Add_1_output_0_splitncnn_1 /blocks.7/norm1/Add_1_output_0 0=384 1=1.000000e-06
+Split                    splitncnn_29             1 3 /blocks.7/norm1/Add_1_output_0 /blocks.7/norm1/Add_1_output_0_splitncnn_0 /blocks.7/norm1/Add_1_output_0_splitncnn_1 /blocks.7/norm1/Add_1_output_0_splitncnn_2
+MultiHeadAttention       /blocks.7/attn/proj/Add  3 1 /blocks.7/norm1/Add_1_output_0_splitncnn_2 /blocks.7/norm1/Add_1_output_0_splitncnn_1 /blocks.7/norm1/Add_1_output_0_splitncnn_0 /blocks.7/attn/proj/Add_output_0 0=384 1=6 2=147456 3=384 4=384
+BinaryOp                 /blocks.7/Add            2 1 /blocks.6/Add_1_output_0_splitncnn_0 /blocks.7/attn/proj/Add_output_0 /blocks.7/Add_output_0
+Split                    splitncnn_30             1 2 /blocks.7/Add_output_0 /blocks.7/Add_output_0_splitncnn_0 /blocks.7/Add_output_0_splitncnn_1
+LayerNorm                /blocks.7/norm2/Add_1    1 1 /blocks.7/Add_output_0_splitncnn_1 /blocks.7/norm2/Add_1_output_0 0=384 1=1.000000e-06
+InnerProduct             /blocks.7/mlp/fc1/MatMul 1 1 /blocks.7/norm2/Add_1_output_0 /blocks.7/mlp/fc1/Add_output_0 0=1536 1=1 2=589824
+GELU                     Gelu_8                   1 1 /blocks.7/mlp/fc1/Add_output_0 /blocks.7/mlp/act/Mul_1_output_0 0=1
+InnerProduct             /blocks.7/mlp/fc2/MatMul 1 1 /blocks.7/mlp/act/Mul_1_output_0 /blocks.7/mlp/fc2/Add_output_0 0=384 1=1 2=589824
+BinaryOp                 /blocks.7/Add_1          2 1 /blocks.7/Add_output_0_splitncnn_0 /blocks.7/mlp/fc2/Add_output_0 /blocks.7/Add_1_output_0
+Split                    splitncnn_32             1 2 /blocks.7/Add_1_output_0 /blocks.7/Add_1_output_0_splitncnn_0 /blocks.7/Add_1_output_0_splitncnn_1
+LayerNorm                /blocks.8/norm1/Add_1    1 1 /blocks.7/Add_1_output_0_splitncnn_1 /blocks.8/norm1/Add_1_output_0 0=384 1=1.000000e-06
+Split                    splitncnn_33             1 3 /blocks.8/norm1/Add_1_output_0 /blocks.8/norm1/Add_1_output_0_splitncnn_0 /blocks.8/norm1/Add_1_output_0_splitncnn_1 /blocks.8/norm1/Add_1_output_0_splitncnn_2
+MultiHeadAttention       /blocks.8/attn/proj/Add  3 1 /blocks.8/norm1/Add_1_output_0_splitncnn_2 /blocks.8/norm1/Add_1_output_0_splitncnn_1 /blocks.8/norm1/Add_1_output_0_splitncnn_0 /blocks.8/attn/proj/Add_output_0 0=384 1=6 2=147456 3=384 4=384
+BinaryOp                 /blocks.8/Add            2 1 /blocks.7/Add_1_output_0_splitncnn_0 /blocks.8/attn/proj/Add_output_0 /blocks.8/Add_output_0
+Split                    splitncnn_34             1 2 /blocks.8/Add_output_0 /blocks.8/Add_output_0_splitncnn_0 /blocks.8/Add_output_0_splitncnn_1
+LayerNorm                /blocks.8/norm2/Add_1    1 1 /blocks.8/Add_output_0_splitncnn_1 /blocks.8/norm2/Add_1_output_0 0=384 1=1.000000e-06
+InnerProduct             /blocks.8/mlp/fc1/MatMul 1 1 /blocks.8/norm2/Add_1_output_0 /blocks.8/mlp/fc1/Add_output_0 0=1536 1=1 2=589824
+GELU                     Gelu_9                   1 1 /blocks.8/mlp/fc1/Add_output_0 /blocks.8/mlp/act/Mul_1_output_0 0=1
+InnerProduct             /blocks.8/mlp/fc2/MatMul 1 1 /blocks.8/mlp/act/Mul_1_output_0 /blocks.8/mlp/fc2/Add_output_0 0=384 1=1 2=589824
+BinaryOp                 /blocks.8/Add_1          2 1 /blocks.8/Add_output_0_splitncnn_0 /blocks.8/mlp/fc2/Add_output_0 /blocks.8/Add_1_output_0
+Split                    splitncnn_36             1 3 /blocks.8/Add_1_output_0 /blocks.8/Add_1_output_0_splitncnn_0 /blocks.8/Add_1_output_0_splitncnn_1 /blocks.8/Add_1_output_0_splitncnn_2
+LayerNorm                /blocks.9/norm1/Add_1    1 1 /blocks.8/Add_1_output_0_splitncnn_2 /blocks.9/norm1/Add_1_output_0 0=384 1=1.000000e-06
+Split                    splitncnn_37             1 3 /blocks.9/norm1/Add_1_output_0 /blocks.9/norm1/Add_1_output_0_splitncnn_0 /blocks.9/norm1/Add_1_output_0_splitncnn_1 /blocks.9/norm1/Add_1_output_0_splitncnn_2
+MultiHeadAttention       /blocks.9/attn/proj/Add  3 1 /blocks.9/norm1/Add_1_output_0_splitncnn_2 /blocks.9/norm1/Add_1_output_0_splitncnn_1 /blocks.9/norm1/Add_1_output_0_splitncnn_0 /blocks.9/attn/proj/Add_output_0 0=384 1=6 2=147456 3=384 4=384
+BinaryOp                 /blocks.9/Add            2 1 /blocks.8/Add_1_output_0_splitncnn_1 /blocks.9/attn/proj/Add_output_0 /blocks.9/Add_output_0
+Split                    splitncnn_38             1 2 /blocks.9/Add_output_0 /blocks.9/Add_output_0_splitncnn_0 /blocks.9/Add_output_0_splitncnn_1
+LayerNorm                /blocks.9/norm2/Add_1    1 1 /blocks.9/Add_output_0_splitncnn_1 /blocks.9/norm2/Add_1_output_0 0=384 1=1.000000e-06
+InnerProduct             /blocks.9/mlp/fc1/MatMul 1 1 /blocks.9/norm2/Add_1_output_0 /blocks.9/mlp/fc1/Add_output_0 0=1536 1=1 2=589824
+GELU                     Gelu_10                  1 1 /blocks.9/mlp/fc1/Add_output_0 /blocks.9/mlp/act/Mul_1_output_0 0=1
+InnerProduct             /blocks.9/mlp/fc2/MatMul 1 1 /blocks.9/mlp/act/Mul_1_output_0 /blocks.9/mlp/fc2/Add_output_0 0=384 1=1 2=589824
+BinaryOp                 /blocks.9/Add_1          2 1 /blocks.9/Add_output_0_splitncnn_0 /blocks.9/mlp/fc2/Add_output_0 /blocks.9/Add_1_output_0
+Split                    splitncnn_40             1 3 /blocks.9/Add_1_output_0 /blocks.9/Add_1_output_0_splitncnn_0 /blocks.9/Add_1_output_0_splitncnn_1 /blocks.9/Add_1_output_0_splitncnn_2
+LayerNorm                /blocks.10/norm1/Add_1   1 1 /blocks.9/Add_1_output_0_splitncnn_2 /blocks.10/norm1/Add_1_output_0 0=384 1=1.000000e-06
+Split                    splitncnn_41             1 3 /blocks.10/norm1/Add_1_output_0 /blocks.10/norm1/Add_1_output_0_splitncnn_0 /blocks.10/norm1/Add_1_output_0_splitncnn_1 /blocks.10/norm1/Add_1_output_0_splitncnn_2
+MultiHeadAttention       /blocks.10/attn/proj/Add 3 1 /blocks.10/norm1/Add_1_output_0_splitncnn_2 /blocks.10/norm1/Add_1_output_0_splitncnn_1 /blocks.10/norm1/Add_1_output_0_splitncnn_0 /blocks.10/attn/proj/Add_output_0 0=384 1=6 2=147456 3=384 4=384
+BinaryOp                 /blocks.10/Add           2 1 /blocks.9/Add_1_output_0_splitncnn_1 /blocks.10/attn/proj/Add_output_0 /blocks.10/Add_output_0
+Split                    splitncnn_42             1 2 /blocks.10/Add_output_0 /blocks.10/Add_output_0_splitncnn_0 /blocks.10/Add_output_0_splitncnn_1
+LayerNorm                /blocks.10/norm2/Add_1   1 1 /blocks.10/Add_output_0_splitncnn_1 /blocks.10/norm2/Add_1_output_0 0=384 1=1.000000e-06
+InnerProduct             /blocks.10/mlp/fc1/MatMul 1 1 /blocks.10/norm2/Add_1_output_0 /blocks.10/mlp/fc1/Add_output_0 0=1536 1=1 2=589824
+GELU                     Gelu_11                  1 1 /blocks.10/mlp/fc1/Add_output_0 /blocks.10/mlp/act/Mul_1_output_0 0=1
+InnerProduct             /blocks.10/mlp/fc2/MatMul 1 1 /blocks.10/mlp/act/Mul_1_output_0 /blocks.10/mlp/fc2/Add_output_0 0=384 1=1 2=589824
+BinaryOp                 /blocks.10/Add_1         2 1 /blocks.10/Add_output_0_splitncnn_0 /blocks.10/mlp/fc2/Add_output_0 /blocks.10/Add_1_output_0
+Split                    splitncnn_44             1 3 /blocks.10/Add_1_output_0 /blocks.10/Add_1_output_0_splitncnn_0 /blocks.10/Add_1_output_0_splitncnn_1 /blocks.10/Add_1_output_0_splitncnn_2
+LayerNorm                /blocks.11/norm1/Add_1   1 1 /blocks.10/Add_1_output_0_splitncnn_2 /blocks.11/norm1/Add_1_output_0 0=384 1=1.000000e-06
+Split                    splitncnn_45             1 3 /blocks.11/norm1/Add_1_output_0 /blocks.11/norm1/Add_1_output_0_splitncnn_0 /blocks.11/norm1/Add_1_output_0_splitncnn_1 /blocks.11/norm1/Add_1_output_0_splitncnn_2
+MultiHeadAttention       /blocks.11/attn/proj/Add 3 1 /blocks.11/norm1/Add_1_output_0_splitncnn_2 /blocks.11/norm1/Add_1_output_0_splitncnn_1 /blocks.11/norm1/Add_1_output_0_splitncnn_0 /blocks.11/attn/proj/Add_output_0 0=384 1=6 2=147456 3=384 4=384
+BinaryOp                 /blocks.11/Add           2 1 /blocks.10/Add_1_output_0_splitncnn_1 /blocks.11/attn/proj/Add_output_0 /blocks.11/Add_output_0
+Split                    splitncnn_46             1 2 /blocks.11/Add_output_0 /blocks.11/Add_output_0_splitncnn_0 /blocks.11/Add_output_0_splitncnn_1
+LayerNorm                /blocks.11/norm2/Add_1   1 1 /blocks.11/Add_output_0_splitncnn_1 /blocks.11/norm2/Add_1_output_0 0=384 1=1.000000e-06
+InnerProduct             /blocks.11/mlp/fc1/MatMul 1 1 /blocks.11/norm2/Add_1_output_0 /blocks.11/mlp/fc1/Add_output_0 0=1536 1=1 2=589824
+GELU                     Gelu_12                  1 1 /blocks.11/mlp/fc1/Add_output_0 /blocks.11/mlp/act/Mul_1_output_0 0=1
+InnerProduct             /blocks.11/mlp/fc2/MatMul 1 1 /blocks.11/mlp/act/Mul_1_output_0 /blocks.11/mlp/fc2/Add_output_0 0=384 1=1 2=589824
+BinaryOp                 /blocks.11/Add_1         2 1 /blocks.11/Add_output_0_splitncnn_0 /blocks.11/mlp/fc2/Add_output_0 /blocks.11/Add_1_output_0
+LayerNorm                /norm/Add_1              1 1 /blocks.8/Add_1_output_0_splitncnn_0 /norm/Add_1_output_0 0=384 1=1.000000e-06
+LayerNorm                /norm_1/Add_1            1 1 /blocks.9/Add_1_output_0_splitncnn_0 /norm_1/Add_1_output_0 0=384 1=1.000000e-06
+LayerNorm                /norm_2/Add_1            1 1 /blocks.10/Add_1_output_0_splitncnn_0 /norm_2/Add_1_output_0 0=384 1=1.000000e-06
+LayerNorm                /norm_3/Add_1            1 1 /blocks.11/Add_1_output_0 /norm_3/Add_1_output_0 0=384 1=1.000000e-06
+Crop                     /Slice                   1 1 /norm/Add_1_output_0 /Slice_output_0 -23309=1,1 -23310=1,2147483647 -23311=1,0
+Crop                     /Slice_1                 1 1 /norm_1/Add_1_output_0 /Slice_1_output_0 -23309=1,1 -23310=1,2147483647 -23311=1,0
+Crop                     /Slice_2                 1 1 /norm_2/Add_1_output_0 /Slice_2_output_0 -23309=1,1 -23310=1,2147483647 -23311=1,0
+Crop                     /Slice_3                 1 1 /norm_3/Add_1_output_0 /Slice_3_output_0 -23309=1,1 -23310=1,2147483647 -23311=1,0
+Permute                  /depth_head/Transpose    1 1 /Slice_output_0 /depth_head/Transpose_output_0 0=1
+Reshape                  /depth_head/Reshape      1 1 /depth_head/Transpose_output_0 /depth_head/Reshape_output_0 0=37 1=37 2=384
+Convolution              /depth_head/projects.0/Conv 1 1 /depth_head/Reshape_output_0 /depth_head/projects.0/Conv_output_0 0=48 1=1 5=1 6=18432
+Deconvolution            /depth_head/resize_layers.0/ConvTranspose 1 1 /depth_head/projects.0/Conv_output_0 /depth_head/resize_layers.0/ConvTranspose_output_0 0=48 1=4 3=4 5=1 6=36864
+Permute                  /depth_head/Transpose_1  1 1 /Slice_1_output_0 /depth_head/Transpose_1_output_0 0=1
+Reshape                  /depth_head/Reshape_1    1 1 /depth_head/Transpose_1_output_0 /depth_head/Reshape_1_output_0 0=37 1=37 2=384
+Convolution              /depth_head/projects.1/Conv 1 1 /depth_head/Reshape_1_output_0 /depth_head/projects.1/Conv_output_0 0=96 1=1 5=1 6=36864
+Deconvolution            /depth_head/resize_layers.1/ConvTranspose 1 1 /depth_head/projects.1/Conv_output_0 /depth_head/resize_layers.1/ConvTranspose_output_0 0=96 1=2 3=2 5=1 6=36864
+Permute                  /depth_head/Transpose_2  1 1 /Slice_2_output_0 /depth_head/Transpose_2_output_0 0=1
+Reshape                  /depth_head/Reshape_2    1 1 /depth_head/Transpose_2_output_0 /depth_head/Reshape_2_output_0 0=37 1=37 2=384
+Convolution              /depth_head/projects.2/Conv 1 1 /depth_head/Reshape_2_output_0 /depth_head/projects.2/Conv_output_0 0=192 1=1 5=1 6=73728
+Permute                  /depth_head/Transpose_3  1 1 /Slice_3_output_0 /depth_head/Transpose_3_output_0 0=1
+Reshape                  /depth_head/Reshape_3    1 1 /depth_head/Transpose_3_output_0 /depth_head/Reshape_3_output_0 0=37 1=37 2=384
+Convolution              /depth_head/projects.3/Conv 1 1 /depth_head/Reshape_3_output_0 /depth_head/projects.3/Conv_output_0 0=384 1=1 5=1 6=147456
+Convolution              /depth_head/resize_layers.3/Conv 1 1 /depth_head/projects.3/Conv_output_0 /depth_head/resize_layers.3/Conv_output_0 0=384 1=3 3=2 4=1 5=1 6=1327104
+Convolution              /depth_head/layer1_rn/Conv 1 1 /depth_head/resize_layers.0/ConvTranspose_output_0 /depth_head/layer1_rn/Conv_output_0 0=64 1=3 4=1 6=27648
+Split                    splitncnn_48             1 2 /depth_head/layer1_rn/Conv_output_0 /depth_head/layer1_rn/Conv_output_0_splitncnn_0 /depth_head/layer1_rn/Conv_output_0_splitncnn_1
+Convolution              /depth_head/layer2_rn/Conv 1 1 /depth_head/resize_layers.1/ConvTranspose_output_0 /depth_head/layer2_rn/Conv_output_0 0=64 1=3 4=1 6=55296
+Split                    splitncnn_49             1 2 /depth_head/layer2_rn/Conv_output_0 /depth_head/layer2_rn/Conv_output_0_splitncnn_0 /depth_head/layer2_rn/Conv_output_0_splitncnn_1
+Convolution              /depth_head/layer3_rn/Conv 1 1 /depth_head/projects.2/Conv_output_0 /depth_head/layer3_rn/Conv_output_0 0=64 1=3 4=1 6=110592
+Split                    splitncnn_50             1 2 /depth_head/layer3_rn/Conv_output_0 /depth_head/layer3_rn/Conv_output_0_splitncnn_0 /depth_head/layer3_rn/Conv_output_0_splitncnn_1
+Convolution              /depth_head/layer4_rn/Conv 1 1 /depth_head/resize_layers.3/Conv_output_0 /depth_head/layer4_rn/Conv_output_0 0=64 1=3 4=1 6=221184
+Split                    splitncnn_51             1 2 /depth_head/layer4_rn/Conv_output_0 /depth_head/layer4_rn/Conv_output_0_splitncnn_0 /depth_head/layer4_rn/Conv_output_0_splitncnn_1
+ReLU                     /depth_head/refinenet4/resConfUnit2/activation/Relu 1 1 /depth_head/layer4_rn/Conv_output_0_splitncnn_1 /depth_head/refinenet4/resConfUnit2/activation/Relu_output_0
+Convolution              /depth_head/refinenet4/resConfUnit2/conv1/Conv 1 1 /depth_head/refinenet4/resConfUnit2/activation/Relu_output_0 /depth_head/refinenet4/resConfUnit2/activation_1/Relu_output_0 0=64 1=3 4=1 5=1 6=36864 9=1
+Convolution              /depth_head/refinenet4/resConfUnit2/conv2/Conv 1 1 /depth_head/refinenet4/resConfUnit2/activation_1/Relu_output_0 /depth_head/refinenet4/resConfUnit2/conv2/Conv_output_0 0=64 1=3 4=1 5=1 6=36864
+BinaryOp                 /depth_head/refinenet4/resConfUnit2/Add 2 1 /depth_head/refinenet4/resConfUnit2/conv2/Conv_output_0 /depth_head/layer4_rn/Conv_output_0_splitncnn_0 /depth_head/refinenet4/resConfUnit2/Add_output_0
+Interp                   /depth_head/refinenet4/Resize 1 1 /depth_head/refinenet4/resConfUnit2/Add_output_0 /depth_head/refinenet4/Resize_output_0 0=2 3=37 4=37 6=1
+Convolution              /depth_head/refinenet4/out_conv/Conv 1 1 /depth_head/refinenet4/Resize_output_0 /depth_head/refinenet4/out_conv/Conv_output_0 0=64 1=1 5=1 6=4096
+ReLU                     /depth_head/refinenet3/resConfUnit1/activation/Relu 1 1 /depth_head/layer3_rn/Conv_output_0_splitncnn_1 /depth_head/refinenet3/resConfUnit1/activation/Relu_output_0
+Convolution              /depth_head/refinenet3/resConfUnit1/conv1/Conv 1 1 /depth_head/refinenet3/resConfUnit1/activation/Relu_output_0 /depth_head/refinenet3/resConfUnit1/activation_1/Relu_output_0 0=64 1=3 4=1 5=1 6=36864 9=1
+Convolution              /depth_head/refinenet3/resConfUnit1/conv2/Conv 1 1 /depth_head/refinenet3/resConfUnit1/activation_1/Relu_output_0 /depth_head/refinenet3/resConfUnit1/conv2/Conv_output_0 0=64 1=3 4=1 5=1 6=36864
+BinaryOp                 /depth_head/refinenet3/resConfUnit1/Add 2 1 /depth_head/refinenet3/resConfUnit1/conv2/Conv_output_0 /depth_head/layer3_rn/Conv_output_0_splitncnn_0 /depth_head/refinenet3/resConfUnit1/Add_output_0
+BinaryOp                 /depth_head/refinenet3/Add 2 1 /depth_head/refinenet4/out_conv/Conv_output_0 /depth_head/refinenet3/resConfUnit1/Add_output_0 /depth_head/refinenet3/Add_output_0
+Split                    splitncnn_52             1 2 /depth_head/refinenet3/Add_output_0 /depth_head/refinenet3/Add_output_0_splitncnn_0 /depth_head/refinenet3/Add_output_0_splitncnn_1
+ReLU                     /depth_head/refinenet3/resConfUnit2/activation/Relu 1 1 /depth_head/refinenet3/Add_output_0_splitncnn_1 /depth_head/refinenet3/resConfUnit2/activation/Relu_output_0
+Convolution              /depth_head/refinenet3/resConfUnit2/conv1/Conv 1 1 /depth_head/refinenet3/resConfUnit2/activation/Relu_output_0 /depth_head/refinenet3/resConfUnit2/activation_1/Relu_output_0 0=64 1=3 4=1 5=1 6=36864 9=1
+Convolution              /depth_head/refinenet3/resConfUnit2/conv2/Conv 1 1 /depth_head/refinenet3/resConfUnit2/activation_1/Relu_output_0 /depth_head/refinenet3/resConfUnit2/conv2/Conv_output_0 0=64 1=3 4=1 5=1 6=36864
+BinaryOp                 /depth_head/refinenet3/resConfUnit2/Add 2 1 /depth_head/refinenet3/resConfUnit2/conv2/Conv_output_0 /depth_head/refinenet3/Add_output_0_splitncnn_0 /depth_head/refinenet3/resConfUnit2/Add_output_0
+Interp                   /depth_head/refinenet3/Resize 1 1 /depth_head/refinenet3/resConfUnit2/Add_output_0 /depth_head/refinenet3/Resize_output_0 0=2 3=74 4=74 6=1
+Convolution              /depth_head/refinenet3/out_conv/Conv 1 1 /depth_head/refinenet3/Resize_output_0 /depth_head/refinenet3/out_conv/Conv_output_0 0=64 1=1 5=1 6=4096
+ReLU                     /depth_head/refinenet2/resConfUnit1/activation/Relu 1 1 /depth_head/layer2_rn/Conv_output_0_splitncnn_1 /depth_head/refinenet2/resConfUnit1/activation/Relu_output_0
+Convolution              /depth_head/refinenet2/resConfUnit1/conv1/Conv 1 1 /depth_head/refinenet2/resConfUnit1/activation/Relu_output_0 /depth_head/refinenet2/resConfUnit1/activation_1/Relu_output_0 0=64 1=3 4=1 5=1 6=36864 9=1
+Convolution              /depth_head/refinenet2/resConfUnit1/conv2/Conv 1 1 /depth_head/refinenet2/resConfUnit1/activation_1/Relu_output_0 /depth_head/refinenet2/resConfUnit1/conv2/Conv_output_0 0=64 1=3 4=1 5=1 6=36864
+BinaryOp                 /depth_head/refinenet2/resConfUnit1/Add 2 1 /depth_head/refinenet2/resConfUnit1/conv2/Conv_output_0 /depth_head/layer2_rn/Conv_output_0_splitncnn_0 /depth_head/refinenet2/resConfUnit1/Add_output_0
+BinaryOp                 /depth_head/refinenet2/Add 2 1 /depth_head/refinenet3/out_conv/Conv_output_0 /depth_head/refinenet2/resConfUnit1/Add_output_0 /depth_head/refinenet2/Add_output_0
+Split                    splitncnn_53             1 2 /depth_head/refinenet2/Add_output_0 /depth_head/refinenet2/Add_output_0_splitncnn_0 /depth_head/refinenet2/Add_output_0_splitncnn_1
+ReLU                     /depth_head/refinenet2/resConfUnit2/activation/Relu 1 1 /depth_head/refinenet2/Add_output_0_splitncnn_1 /depth_head/refinenet2/resConfUnit2/activation/Relu_output_0
+Convolution              /depth_head/refinenet2/resConfUnit2/conv1/Conv 1 1 /depth_head/refinenet2/resConfUnit2/activation/Relu_output_0 /depth_head/refinenet2/resConfUnit2/activation_1/Relu_output_0 0=64 1=3 4=1 5=1 6=36864 9=1
+Convolution              /depth_head/refinenet2/resConfUnit2/conv2/Conv 1 1 /depth_head/refinenet2/resConfUnit2/activation_1/Relu_output_0 /depth_head/refinenet2/resConfUnit2/conv2/Conv_output_0 0=64 1=3 4=1 5=1 6=36864
+BinaryOp                 /depth_head/refinenet2/resConfUnit2/Add 2 1 /depth_head/refinenet2/resConfUnit2/conv2/Conv_output_0 /depth_head/refinenet2/Add_output_0_splitncnn_0 /depth_head/refinenet2/resConfUnit2/Add_output_0
+Interp                   /depth_head/refinenet2/Resize 1 1 /depth_head/refinenet2/resConfUnit2/Add_output_0 /depth_head/refinenet2/Resize_output_0 0=2 3=148 4=148 6=1
+Convolution              /depth_head/refinenet2/out_conv/Conv 1 1 /depth_head/refinenet2/Resize_output_0 /depth_head/refinenet2/out_conv/Conv_output_0 0=64 1=1 5=1 6=4096
+ReLU                     /depth_head/refinenet1/resConfUnit1/activation/Relu 1 1 /depth_head/layer1_rn/Conv_output_0_splitncnn_1 /depth_head/refinenet1/resConfUnit1/activation/Relu_output_0
+Convolution              /depth_head/refinenet1/resConfUnit1/conv1/Conv 1 1 /depth_head/refinenet1/resConfUnit1/activation/Relu_output_0 /depth_head/refinenet1/resConfUnit1/activation_1/Relu_output_0 0=64 1=3 4=1 5=1 6=36864 9=1
+Convolution              /depth_head/refinenet1/resConfUnit1/conv2/Conv 1 1 /depth_head/refinenet1/resConfUnit1/activation_1/Relu_output_0 /depth_head/refinenet1/resConfUnit1/conv2/Conv_output_0 0=64 1=3 4=1 5=1 6=36864
+BinaryOp                 /depth_head/refinenet1/resConfUnit1/Add 2 1 /depth_head/refinenet1/resConfUnit1/conv2/Conv_output_0 /depth_head/layer1_rn/Conv_output_0_splitncnn_0 /depth_head/refinenet1/resConfUnit1/Add_output_0
+BinaryOp                 /depth_head/refinenet1/Add 2 1 /depth_head/refinenet2/out_conv/Conv_output_0 /depth_head/refinenet1/resConfUnit1/Add_output_0 /depth_head/refinenet1/Add_output_0
+Split                    splitncnn_54             1 2 /depth_head/refinenet1/Add_output_0 /depth_head/refinenet1/Add_output_0_splitncnn_0 /depth_head/refinenet1/Add_output_0_splitncnn_1
+ReLU                     /depth_head/refinenet1/resConfUnit2/activation/Relu 1 1 /depth_head/refinenet1/Add_output_0_splitncnn_1 /depth_head/refinenet1/resConfUnit2/activation/Relu_output_0
+Convolution              /depth_head/refinenet1/resConfUnit2/conv1/Conv 1 1 /depth_head/refinenet1/resConfUnit2/activation/Relu_output_0 /depth_head/refinenet1/resConfUnit2/activation_1/Relu_output_0 0=64 1=3 4=1 5=1 6=36864 9=1
+Convolution              /depth_head/refinenet1/resConfUnit2/conv2/Conv 1 1 /depth_head/refinenet1/resConfUnit2/activation_1/Relu_output_0 /depth_head/refinenet1/resConfUnit2/conv2/Conv_output_0 0=64 1=3 4=1 5=1 6=36864
+BinaryOp                 /depth_head/refinenet1/resConfUnit2/Add 2 1 /depth_head/refinenet1/resConfUnit2/conv2/Conv_output_0 /depth_head/refinenet1/Add_output_0_splitncnn_0 /depth_head/refinenet1/resConfUnit2/Add_output_0
+Interp                   /depth_head/refinenet1/Resize 1 1 /depth_head/refinenet1/resConfUnit2/Add_output_0 /depth_head/refinenet1/Resize_output_0 0=2 1=2.000000e+00 2=2.000000e+00 6=1
+Convolution              /depth_head/refinenet1/out_conv/Conv 1 1 /depth_head/refinenet1/Resize_output_0 /depth_head/refinenet1/out_conv/Conv_output_0 0=64 1=1 5=1 6=4096
+Convolution              /depth_head/output_conv1/Conv 1 1 /depth_head/refinenet1/out_conv/Conv_output_0 /depth_head/output_conv1/Conv_output_0 0=32 1=3 4=1 5=1 6=18432
+Interp                   /depth_head/Resize       1 1 /depth_head/output_conv1/Conv_output_0 /depth_head/Resize_output_0 0=2 3=518 4=518 6=1
+Convolution              /depth_head/output_conv2/output_conv2.0/Conv 1 1 /depth_head/Resize_output_0 /depth_head/output_conv2/output_conv2.1/Relu_output_0 0=32 1=3 4=1 5=1 6=9216 9=1
+Convolution              /depth_head/output_conv2/output_conv2.2/Conv 1 1 /depth_head/output_conv2/output_conv2.1/Relu_output_0 /depth_head/output_conv2/output_conv2.3/Relu_output_0 0=1 1=1 5=1 6=32 9=1
+Interp                   /Resize_1                1 1 /depth_head/output_conv2/output_conv2.3/Relu_output_0 /Resize_1_output_0 0=2 3=518 4=518 6=1
+ReLU                     /Relu                    1 1 /Resize_1_output_0 depth
